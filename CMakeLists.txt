@@ -11,4 +11,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)       # use standard C++, rather than compiler-spe
 
 add_executable(trading_system 
     src/main.cpp
-    )   
+    ) 
+    
+target_include_directories(trading_system
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
