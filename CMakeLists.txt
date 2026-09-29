@@ -23,7 +23,7 @@ target_include_directories(order_book
 )
 
 # ============================================================
-# Order Book Library
+# Market feed Library
 # ============================================================
 
 add_library(market_feed_simulator
@@ -33,6 +33,23 @@ add_library(market_feed_simulator
 target_include_directories(market_feed_simulator
    PUBLIC 
         ${CMAKE_SOURCE_DIR}/include
+)
+
+# ============================================================
+# event processor Library
+# ============================================================
+add_library(event_processor 
+   src/event_processor.cpp 
+)
+
+target_include_directories(event_processor
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include    
+)
+
+target_link_libraries(event_processor
+   PUBLIC
+        order_book
 )
 
 # ============================================================
@@ -115,4 +132,14 @@ add_executable(example_market_feed_simulator
 target_link_libraries(example_market_feed_simulator
     PRIVATE
         market_feed_simulator
+)
+
+add_executable(example_event_processor
+   examples/08_event_processor.cpp
+) 
+
+target_link_libraries(example_event_processor
+    PRIVATE
+        market_feed_simulator
+        event_processor
 )
