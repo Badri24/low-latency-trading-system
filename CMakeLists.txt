@@ -23,6 +23,19 @@ target_include_directories(order_book
 )
 
 # ============================================================
+# Order Book Library
+# ============================================================
+
+add_library(market_feed_simulator
+    src/market_feed_simulator.cpp
+)
+
+target_include_directories(market_feed_simulator
+   PUBLIC 
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+# ============================================================
 # Main Trading System Application
 # ============================================================
 
@@ -93,4 +106,13 @@ add_executable(example_trade
 target_link_libraries(example_trade
     PRIVATE
         order_book
+)
+
+add_executable(example_market_feed_simulator
+   examples/07_market_feed_simulator.cpp
+)
+
+target_link_libraries(example_market_feed_simulator
+    PRIVATE
+        market_feed_simulator
 )
