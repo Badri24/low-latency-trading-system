@@ -36,6 +36,20 @@ target_include_directories(market_feed_simulator
 )
 
 # ============================================================
+# Thread safe queue Library
+# ============================================================
+
+add_library(thread_safe_queue
+    src/thread_safe_queue.cpp
+)
+
+target_include_directories(thread_safe_queue
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+
+# ============================================================
 # event processor Library
 # ============================================================
 add_library(event_processor 
@@ -142,4 +156,36 @@ target_link_libraries(example_event_processor
     PRIVATE
         market_feed_simulator
         event_processor
+)
+
+add_executable(example_multithreading_basics
+    examples/09_multithreading_basics.cpp
+)
+
+add_executable(example_data_race
+    examples/10_data_race.cpp
+)
+
+add_executable(example_mutex
+    examples/11_mutex.cpp
+)
+
+add_executable(example_thread_safe_queue
+    examples/12_thread_safe_queue.cpp
+)
+
+target_link_libraries(example_thread_safe_queue
+    PRIVATE
+        thread_safe_queue
+)
+
+add_executable(example_threaded_event_pipeline
+    examples/13_threaded_event_pipeline.cpp
+)
+
+target_link_libraries(example_threaded_event_pipeline
+    PRIVATE
+        market_feed_simulator
+        event_processor
+        thread_safe_queue
 )
