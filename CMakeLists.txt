@@ -189,3 +189,55 @@ target_link_libraries(example_threaded_event_pipeline
         event_processor
         thread_safe_queue
 )
+
+add_executable(example_atomic_counter
+    examples/14_atomic_counter.cpp
+)
+
+target_link_libraries(example_atomic_counter
+    PRIVATE
+        Threads::Threads
+)
+
+find_package(Threads REQUIRED)
+
+add_executable(example_mutex_vs_atomic
+    examples/15_mutex_vs_atomic.cpp
+)
+
+target_link_libraries(example_mutex_vs_atomic
+    PRIVATE
+        Threads::Threads
+)
+
+add_executable(example_atomic_memory_order
+    examples/16_atomic_memory_order.cpp
+)
+
+target_link_libraries(example_atomic_memory_order
+    PRIVATE
+        Threads::Threads
+)
+
+add_executable(example_acquire_release
+    examples/17_acquire_release.cpp
+)
+
+target_include_directories(example_acquire_release
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+target_link_libraries(example_acquire_release
+    PRIVATE
+        Threads::Threads
+)
+
+add_executable(example_happens_before
+    examples/18_happens_before.cpp
+)
+
+target_link_libraries(example_happens_before
+    PRIVATE
+        Threads::Threads
+)
