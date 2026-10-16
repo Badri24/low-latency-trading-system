@@ -241,3 +241,69 @@ target_link_libraries(example_happens_before
     PRIVATE
         Threads::Threads
 )
+
+add_executable(example_spsc_queue_basic
+    examples/19_spsc_queue_basic.cpp
+)
+
+target_include_directories(example_spsc_queue_basic
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+add_executable(example_spsc_queue_wraparound
+    examples/20_spsc_queue_wraparound.cpp
+)
+
+target_include_directories(example_spsc_queue_wraparound
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+add_executable(example_spsc_queue_threads
+    examples/21_spsc_queue_threads.cpp
+)
+
+target_include_directories(example_spsc_queue_threads
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+target_link_libraries(example_spsc_queue_threads
+    PRIVATE
+        Threads::Threads
+)
+
+add_executable(example_spsc_trading_pipeline
+    examples/22_spsc_trading_pipeline.cpp
+)
+
+target_include_directories(example_spsc_trading_pipeline
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+target_link_libraries(example_spsc_trading_pipeline
+    PRIVATE
+        market_feed_simulator
+        event_processor
+        thread_safe_queue
+        Threads::Threads
+)
+
+add_executable(example_mutex_vs_spsc_benchmark
+    examples/23_mutex_vs_spsc_benchmark.cpp
+)
+
+target_include_directories(example_mutex_vs_spsc_benchmark
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+)
+
+target_link_libraries(example_mutex_vs_spsc_benchmark
+    PRIVATE
+        market_feed_simulator
+        event_processor
+        thread_safe_queue
+        Threads::Threads
+)
