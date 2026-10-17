@@ -35,41 +35,39 @@ int main()
             MarketDataEvent event{};
 
             while (true)
-            {
-                // Try to retrieve the next available event.
-                if (queue.tryPop(event))
-                {
-                    ++consumedCount;
+{
+    // Acquire completion status before checking the queue.
+    const bool done =
+        producerDone.load(std::memory_order_acquire);
 
-                    // Only the consumer modifies the OrderBook.
-                    const bool success = processor.process(event);
+    if (queue.tryPop(event))
+    {
+        ++consumedCount;
 
-                    if (!success)
-                    {
-                        ++failedCount;
+        const bool success = processor.process(event);
 
-                        std::cout
-                            << "Failed to process event for OrderId="
-                            << event.order_id
-                            << '\n';
-                    }
+        if (!success)
+        {
+            ++failedCount;
 
-                    continue;
-                }
+            std::cout
+                << "Failed to process event for OrderId="
+                << event.order_id
+                << '\n';
+        }
 
-                // tryPop() failed: the queue appeared empty.
-                //
-                // If the producer is finished, and there is
-                // nothing left to read, we can stop.
-                if (producerDone.load(std::memory_order_acquire))
-                {
-                    break;
-                }
+        continue;
+    }
 
-                // The producer may still publish new events.
-                // Yield rather than spinning continuously.
-                std::this_thread::yield();
-            }
+    // A failed pop after observing completion means
+    // there are no published events left to consume.
+    if (done)
+    {
+        break;
+    }
+
+    std::this_thread::yield();
+}
         }
     );
 
